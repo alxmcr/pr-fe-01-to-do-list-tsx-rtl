@@ -1,0 +1,40 @@
+.todolist__button {
+  appearance: none;
+  background-color: #ff1f5b;
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  gap: 0.65rem;
+  padding: 0.8rem 1.2rem;
+  width: 100%;
+}
+
+.todolist__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.todolist__input {
+  background-color: #fff;
+
+  border: none;
+  border-radius: 0.5rem;
+  outline: none;
+
+  height: 40px;
+  width: 100%;
+}
+.todolist__input:focus {
+  border: 1px solid #ff1f5b;
+}
+
+.todolist__button,
+.todolist__input {
+  padding: 1rem 0.5rem;
+}
