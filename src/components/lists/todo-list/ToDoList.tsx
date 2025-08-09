@@ -1,4 +1,4 @@
-import type { ToDoItemData } from "../../services/todo-list-service/IToDoListService";
+import type { ToDoItemData } from "../../../services/todo-list-service/IToDoListService";
 import { ToDoItem } from "../todo-item/ToDoItem";
 import "./ToDoList.styles.css";
 
