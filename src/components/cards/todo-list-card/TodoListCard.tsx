@@ -2,6 +2,7 @@ import {
   getNameDay,
   internationalizationDate,
 } from "../../../helpers/date-helpers";
+import { useTodos } from "../../../hooks/useTodos";
 import { ToDoAddForm } from "../../forms/todo-add-form/ToDoAddForm";
 import { ToDoList } from "../../lists/todo-list/ToDoList";
 
@@ -24,11 +25,17 @@ function ToDoListHeaderCard() {
 }
 
 export function ToDoListCard() {
+  const { todos, errorTodos, loadStatusTodos } = useTodos();
+
   return (
     <article className="todolist">
       <ToDoListHeaderCard />
       <div className="todolist__body">
-        <ToDoList todos={[]} />
+        {loadStatusTodos === "pending" ? <p>Load to do list...</p> : null}
+        {loadStatusTodos === "error" && errorTodos !== null ? (
+          <p>{errorTodos.message}</p>
+        ) : null}
+        {loadStatusTodos === "success" ? <ToDoList todos={todos} /> : null}
       </div>
       <footer className="todolist__footer">
         <ToDoAddForm />
