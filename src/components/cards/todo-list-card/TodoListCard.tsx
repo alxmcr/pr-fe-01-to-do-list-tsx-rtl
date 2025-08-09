@@ -18,9 +18,9 @@ function ToDoListHeaderCard() {
   const dateFormatted = internationalizationDate(today, options);
 
   return (
-    <header className="todolist__header">
-      <p className="todolist__day">{dateFormatted}</p>
-      <p className="todolist__nameday">{nameDay}</p>
+    <header className="todolist-card__header">
+      <p className="todolist-card__day">{dateFormatted}</p>
+      <p className="todolist-card__nameday">{nameDay}</p>
     </header>
   );
 }
@@ -29,16 +29,16 @@ export function ToDoListCard() {
   const { todos, errorTodos, loadStatusTodos } = useTodos();
 
   return (
-    <article className="todolist">
+    <article className="todolist-card">
       <ToDoListHeaderCard />
-      <div className="todolist__body">
+      <div className="todolist-card__body">
         {loadStatusTodos === "pending" ? <p>Load to do list...</p> : null}
         {loadStatusTodos === "error" && errorTodos !== null ? (
           <p>{errorTodos.message}</p>
         ) : null}
         {loadStatusTodos === "success" ? <ToDoList todos={todos} /> : null}
       </div>
-      <footer className="todolist__footer">
+      <footer className="todolist-card__footer">
         <ToDoAddForm />
       </footer>
     </article>
