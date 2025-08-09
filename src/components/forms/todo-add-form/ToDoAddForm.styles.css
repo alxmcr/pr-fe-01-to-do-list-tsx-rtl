@@ -21,9 +21,13 @@
 }
 
 .todolist__input {
+  background-color: #fff;
+
   border: none;
   border-radius: 0.5rem;
   outline: none;
+
+  height: 40px;
   width: 100%;
 }
 .todolist__input:focus {
