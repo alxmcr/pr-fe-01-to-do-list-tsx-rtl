@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+html {
+  font-size: 13px;
+  scroll-behavior: smooth;
+}
+
+body {
+  align-items: center;
+  background: #bec4d4;
+  display: flex;
+  color: #1c160f;
+  flex-direction: row;
+  font-family: "Open Sans", sans-serif;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 0.5rem;
+  width: 100%;
+}
