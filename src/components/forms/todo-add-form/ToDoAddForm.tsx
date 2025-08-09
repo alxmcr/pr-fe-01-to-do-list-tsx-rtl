@@ -1,8 +1,13 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import "./ToDoAddForm.styles.css";
+import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoListContext";
+import type { ToDoItemData } from "../../../services/todo-list-service/IToDoListService";
+import { addToDoItemAction } from "../../../store/todolist/todolist.actions";
 
 export function ToDoAddForm() {
   const [text, setText] = React.useState<string>("");
+  const { dispatch } = React.useContext(ToDoListContext);
 
   function onChangeText(e: React.ChangeEvent<HTMLInputElement>) {
     setText(e.target.value);
@@ -10,6 +15,16 @@ export function ToDoAddForm() {
 
   function onSubmit(ev: React.FormEvent) {
     ev.preventDefault();
+
+    // ToDoItem
+    const todoitem: ToDoItemData = {
+      id: uuidv4(),
+      text,
+      isDone: false,
+    };
+
+    // Action
+    dispatch(addToDoItemAction(todoitem));
   }
 
   return (
