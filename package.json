@@ -1,7 +1,7 @@
 {
   "name": "pr-fe-01-to-do-list-tsx-rtl",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router": "^7.8.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
