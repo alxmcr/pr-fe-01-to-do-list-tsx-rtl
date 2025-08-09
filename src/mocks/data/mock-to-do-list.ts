@@ -1,6 +1,6 @@
-import type { TodoItemData } from "../../services/todo-list-service/IToDoListService";
+import type { ToDoItemData } from "../../services/todo-list-service/IToDoListService";
 
-export const mockToDoList: TodoItemData[] = [
+export const mockToDoList: ToDoItemData[] = [
   {
     id: 1,
     text: "Go to dentist",
