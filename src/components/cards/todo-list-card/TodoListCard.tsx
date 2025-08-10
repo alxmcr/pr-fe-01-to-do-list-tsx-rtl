@@ -30,13 +30,17 @@ export function ToDoListCard() {
   const { state } = React.useContext(ToDoListContext);
 
   return (
-    <article className="flex flex-col h-screen md:h-[500px]">
+    <article className="bg-white flex flex-col w-screen h-screen md:w-[350px] md:h-[500px]">
       <ToDoListHeaderCard />
       <div className="flex-1">
         <ToDoList todos={state.todos} />
       </div>
       <footer className="p-2">
         <ToDoAddForm />
+        <small className="App__attribution">
+          Thanks! Icons by Font-Aweasome, favicon by Adri Ansyah, and Photo by
+          Glenn Carstens-Peters on Unsplash.
+        </small>
       </footer>
     </article>
   );

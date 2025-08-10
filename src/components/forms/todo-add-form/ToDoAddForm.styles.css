@@ -23,7 +23,7 @@
 .todolist__input {
   background-color: #fff;
 
-  border: none;
+  border: 1px solid #000;
   border-radius: 0.5rem;
   outline: none;
 
@@ -31,7 +31,7 @@
   width: 100%;
 }
 .todolist__input:focus {
-  border: 1px solid #ff1f5b;
+  border: 2px solid #ff1f5b;
 }
 
 .todolist__button,
