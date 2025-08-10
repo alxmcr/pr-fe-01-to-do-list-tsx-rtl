@@ -35,7 +35,7 @@ export function ToDoListCard() {
       <div className="flex-1">
         <ToDoList todos={state.todos} />
       </div>
-      <footer className="">
+      <footer className="p-2">
         <ToDoAddForm />
       </footer>
     </article>
