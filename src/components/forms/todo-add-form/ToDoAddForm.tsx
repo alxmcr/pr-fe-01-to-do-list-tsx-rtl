@@ -32,13 +32,13 @@ export function ToDoAddForm() {
 
   return (
     <form className="todolist__form" onSubmit={onSubmit}>
-      <label htmlFor="text">Description:</label>
+      <label htmlFor="description">Description:</label>
       <input
         type="text"
         className="todolist__input"
         placeholder="Enter the task's description"
-        id="text"
-        name="text"
+        id="description"
+        name="description"
         required={true}
         value={text}
         onChange={onChangeText}

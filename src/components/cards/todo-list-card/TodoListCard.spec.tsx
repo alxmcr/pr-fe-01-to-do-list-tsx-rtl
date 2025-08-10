@@ -47,7 +47,9 @@ describe("ToDoListCard component", () => {
 
     // UI elements
     const btnAddNew = screen.getByText(/ADD NEW/i);
+    const inputText = screen.getByLabelText("Description:");
 
     expect(btnAddNew).toBeInTheDocument();
+    expect(inputText).toBeInTheDocument();
   });
 });
