@@ -7,6 +7,7 @@ import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoList
 import { ToDoAddForm } from "../../forms/todo-add-form/ToDoAddForm";
 import { ToDoList } from "../../lists/todo-list/ToDoList";
 import "./ToDoListCard.styles.css";
+import type { ToDoItemData } from "../../../services/todo-list-service/IToDoListService";
 
 function ToDoListHeaderCard() {
   const today = new Date();
@@ -26,22 +27,46 @@ function ToDoListHeaderCard() {
   );
 }
 
+function ToDoListFooterCard() {
+  return (
+    <footer className="p-2">
+      <ToDoAddForm />
+      <small className="App__attribution">
+        Thanks! Icons by Font-Aweasome, favicon by Adri Ansyah, and Photo by
+        Glenn Carstens-Peters on Unsplash.
+      </small>
+    </footer>
+  );
+}
+
+type Props = {
+  todos: ToDoItemData[];
+};
+
+function ToDoListBodyCard({ todos = [] }: Props) {
+  if (todos?.length === 0) {
+    return (
+      <div className="flex-1 flex justify-center items-center bg-red-100">
+        <p className="text-2xl">Todo list is empty</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 bg-red-100 p-2 w-full">
+      <ToDoList todos={todos} />
+    </div>
+  );
+}
+
 export function ToDoListCard() {
   const { state } = React.useContext(ToDoListContext);
 
   return (
     <article className="bg-white flex flex-col w-screen h-screen md:w-[350px] md:h-[500px]">
       <ToDoListHeaderCard />
-      <div className="flex-1">
-        <ToDoList todos={state.todos} />
-      </div>
-      <footer className="p-2">
-        <ToDoAddForm />
-        <small className="App__attribution">
-          Thanks! Icons by Font-Aweasome, favicon by Adri Ansyah, and Photo by
-          Glenn Carstens-Peters on Unsplash.
-        </small>
-      </footer>
+      <ToDoListBodyCard todos={state.todos} />
+      <ToDoListFooterCard />
     </article>
   );
 }
