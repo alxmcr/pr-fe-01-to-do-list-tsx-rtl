@@ -1,9 +1,9 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import "./ToDoAddForm.styles.css";
 import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoListContext";
 import type { ToDoItemData } from "../../../services/todo-list-service/IToDoListService";
 import { addToDoItemAction } from "../../../store/todolist/todolist.actions";
+import "./ToDoAddForm.styles.css";
 
 export function ToDoAddForm() {
   const [text, setText] = React.useState<string>("");
@@ -25,6 +25,9 @@ export function ToDoAddForm() {
 
     // Action
     dispatch(addToDoItemAction(todoitem));
+
+    // Reset input
+    setText("");
   }
 
   return (
