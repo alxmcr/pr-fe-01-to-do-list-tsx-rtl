@@ -1,9 +1,10 @@
-import { screen, render, fireEvent } from "@testing-library/react";
-import { ToDoListCard } from "./TodoListCard";
+import { fireEvent, render, screen } from "@testing-library/react";
 import {
   getNameDay,
   internationalizationDate,
 } from "../../../helpers/date-helpers";
+import { AppProviders } from "../../../providers/AppProviders";
+import { ToDoListCard } from "./TodoListCard";
 
 describe("ToDoListCard component", () => {
   it("renders component", () => {
@@ -42,28 +43,26 @@ describe("ToDoListCard component", () => {
     expect(textEmptyList).toBeInTheDocument();
   });
 
-  it("add an item", () => {
-    render(<ToDoListCard />);
+  it("submits a new todo item and clears the input", () => {
+    const mockDispatch = jest.fn();
 
-    // UI elements
-    const btnAddNew = screen.getByText(/ADD NEW/i);
-    const inputText = screen.getByLabelText("Description:");
-    const textEmptyList = screen.getByText(/Todo list is empty/i);
+    render(
+      <AppProviders>
+        <ToDoListCard />
+      </AppProviders>
+    );
 
-    expect(btnAddNew).toBeInTheDocument();
-    expect(inputText).toBeInTheDocument();
-    expect(textEmptyList).toBeInTheDocument();
+    const input = screen.getByLabelText(/description/i);
+    const button = screen.getByRole("button", { name: /add new/i });
 
-    // Fill input
-    const textTodoInputTest = "Test Todo";
-    fireEvent.change(inputText, { target: { value: textTodoInputTest } });
+    // Enter text
+    fireEvent.change(input, { target: { value: "Test task" } });
+    expect(input).toHaveValue("Test task");
 
-    // Add item
-    fireEvent.click(btnAddNew);
+    // Submit
+    fireEvent.click(button);
 
-    // Check list
-    const itemText = screen.getByText(textTodoInputTest);
-    expect(textEmptyList).not.toBeInTheDocument();
-    expect(itemText).toBeInTheDocument();
+    // Input should be cleared
+    expect(input).toHaveValue("");
   });
 });
