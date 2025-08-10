@@ -36,8 +36,6 @@
 
 .todolist-card__header {
   background-color: #ff1f5b;
-  border-top-left-radius: 0.4rem;
-  border-top-right-radius: 0.4rem;
   color: #fff;
   display: flex;
   flex-direction: column;

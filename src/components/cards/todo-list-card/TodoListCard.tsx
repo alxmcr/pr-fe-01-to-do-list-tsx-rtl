@@ -30,7 +30,7 @@ export function ToDoListCard() {
   const { state } = React.useContext(ToDoListContext);
 
   return (
-    <article className="flex flex-col h-[50px]">
+    <article className="flex flex-col h-screen md:h-[500px]">
       <ToDoListHeaderCard />
       <div className="flex-1">
         <ToDoList todos={state.todos} />
