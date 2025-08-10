@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react";
+import { screen, render, fireEvent } from "@testing-library/react";
 import { ToDoListCard } from "./TodoListCard";
 import {
   getNameDay,
@@ -48,8 +48,22 @@ describe("ToDoListCard component", () => {
     // UI elements
     const btnAddNew = screen.getByText(/ADD NEW/i);
     const inputText = screen.getByLabelText("Description:");
+    const textEmptyList = screen.getByText(/Todo list is empty/i);
 
     expect(btnAddNew).toBeInTheDocument();
     expect(inputText).toBeInTheDocument();
+    expect(textEmptyList).toBeInTheDocument();
+
+    // Fill input
+    const textTodoInputTest = "Test Todo";
+    fireEvent.change(inputText, { target: { value: textTodoInputTest } });
+
+    // Add item
+    fireEvent.click(btnAddNew);
+
+    // Check list
+    const itemText = screen.getByText(textTodoInputTest);
+    expect(textEmptyList).not.toBeInTheDocument();
+    expect(itemText).toBeInTheDocument();
   });
 });
