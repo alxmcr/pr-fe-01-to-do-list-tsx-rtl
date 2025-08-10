@@ -54,13 +54,18 @@ describe("ToDoListCard component", () => {
     const button = screen.getByRole("button", { name: /add new/i });
 
     // Enter text
-    fireEvent.change(input, { target: { value: "Test task" } });
-    expect(input).toHaveValue("Test task");
+    const textInput = "Test task";
+    fireEvent.change(input, { target: { value: textInput } });
+    expect(input).toHaveValue(textInput);
 
     // Submit
     fireEvent.click(button);
 
     // Input should be cleared
     expect(input).toHaveValue("");
+
+    // Check creation
+    const item = screen.getByText(textInput);
+    expect(item).toBeInTheDocument();
   });
 });
