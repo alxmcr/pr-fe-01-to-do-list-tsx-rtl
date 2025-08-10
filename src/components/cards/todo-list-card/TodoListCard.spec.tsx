@@ -41,4 +41,13 @@ describe("ToDoListCard component", () => {
     // Expect
     expect(textEmptyList).toBeInTheDocument();
   });
+
+  it("add an item", () => {
+    render(<ToDoListCard />);
+
+    // UI elements
+    const btnAddNew = screen.getByText(/ADD NEW/i);
+
+    expect(btnAddNew).toBeInTheDocument();
+  });
 });
