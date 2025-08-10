@@ -7,8 +7,10 @@ describe("ToDoAddForm component", () => {
 
     // UI Elements
     const labelDescription = screen.getByText(/Description/i);
+    const btnAddNew = screen.getByText(/ADD NEW/i);
 
     // Expect
     expect(labelDescription).toBeInTheDocument();
+    expect(btnAddNew).toBeInTheDocument();
   });
 });
