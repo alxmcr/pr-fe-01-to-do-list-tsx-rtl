@@ -31,4 +31,14 @@ describe("ToDoListCard component", () => {
     expect(textDateFormatted).toBeInTheDocument();
     expect(textNameDay).toBeInTheDocument();
   });
+
+  it("empty list", () => {
+    render(<ToDoListCard />);
+
+    // UI Elements
+    const textEmptyList = screen.getByText(/Todo list is empty/i);
+
+    // Expect
+    expect(textEmptyList).toBeInTheDocument();
+  });
 });
