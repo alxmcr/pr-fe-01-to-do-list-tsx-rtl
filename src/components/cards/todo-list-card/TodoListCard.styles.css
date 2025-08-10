@@ -11,6 +11,7 @@
   flex-direction: column;
   gap: 0.5rem;
   overflow: auto;
+  flex: 1;
 }
 
 .todolist-card__body::-webkit-scrollbar-track {
