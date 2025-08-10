@@ -44,8 +44,6 @@ describe("ToDoListCard component", () => {
   });
 
   it("submits a new todo item and clears the input", () => {
-    const mockDispatch = jest.fn();
-
     render(
       <AppProviders>
         <ToDoListCard />
