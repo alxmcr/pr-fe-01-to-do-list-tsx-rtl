@@ -6,11 +6,12 @@
 }
 
 .todolist-card__body {
+  background-color: #ffccda;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  height: 14.5rem;
   overflow: auto;
+  flex: 1;
 }
 
 .todolist-card__body::-webkit-scrollbar-track {
@@ -36,8 +37,6 @@
 
 .todolist-card__header {
   background-color: #ff1f5b;
-  border-top-left-radius: 0.4rem;
-  border-top-right-radius: 0.4rem;
   color: #fff;
   display: flex;
   flex-direction: column;
