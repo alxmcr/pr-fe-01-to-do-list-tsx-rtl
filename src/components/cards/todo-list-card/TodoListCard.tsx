@@ -30,12 +30,12 @@ export function ToDoListCard() {
   const { state } = React.useContext(ToDoListContext);
 
   return (
-    <article className="todolist-card">
+    <article className="flex flex-col h-[50px]">
       <ToDoListHeaderCard />
-      <div className="todolist-card__body">
+      <div className="flex-1">
         <ToDoList todos={state.todos} />
       </div>
-      <footer className="todolist-card__footer">
+      <footer className="">
         <ToDoAddForm />
       </footer>
     </article>
