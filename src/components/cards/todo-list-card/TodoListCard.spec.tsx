@@ -64,8 +64,12 @@ describe("ToDoListCard component", () => {
     // Input should be cleared
     expect(input).toHaveValue("");
 
-    // Check creation
+    // Check new item added
     const item = screen.getByText(textInput);
     expect(item).toBeInTheDocument();
+
+    // ✅ Use queryByText here instead of getByText
+    const textEmptyList = screen.queryByText(/Todo list is empty/i);
+    expect(textEmptyList).not.toBeInTheDocument();
   });
 });
