@@ -1,4 +1,4 @@
-import { ToDoListCard } from "../components/cards/todo-list-card/ToDoListCard";
+import { ToDoListCard } from "../components/cards/todo-list-card/TodoListCard";
 import "./home-page.css";
 
 export default function HomePage() {

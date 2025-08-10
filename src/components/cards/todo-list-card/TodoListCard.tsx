@@ -1,8 +1,9 @@
+import React from "react";
 import {
   getNameDay,
   internationalizationDate,
 } from "../../../helpers/date-helpers";
-import { useTodos } from "../../../hooks/useTodos";
+import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoListContext";
 import { ToDoAddForm } from "../../forms/todo-add-form/ToDoAddForm";
 import { ToDoList } from "../../lists/todo-list/ToDoList";
 import "./ToDoListCard.styles.css";
@@ -26,17 +27,13 @@ function ToDoListHeaderCard() {
 }
 
 export function ToDoListCard() {
-  const { todos, errorTodos, loadStatusTodos } = useTodos();
+  const { state } = React.useContext(ToDoListContext);
 
   return (
     <article className="todolist-card">
       <ToDoListHeaderCard />
       <div className="todolist-card__body">
-        {loadStatusTodos === "pending" ? <p>Load to do list...</p> : null}
-        {loadStatusTodos === "error" && errorTodos !== null ? (
-          <p>{errorTodos.message}</p>
-        ) : null}
-        {loadStatusTodos === "success" ? <ToDoList todos={todos} /> : null}
+        <ToDoList todos={state.todos} />
       </div>
       <footer className="todolist-card__footer">
         <ToDoAddForm />
