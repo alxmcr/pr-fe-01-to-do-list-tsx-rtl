@@ -6,10 +6,10 @@
 }
 
 .todolist-card__body {
+  background-color: #ffccda;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  height: 14.5rem;
   overflow: auto;
 }
 

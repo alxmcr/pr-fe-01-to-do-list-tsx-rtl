@@ -46,14 +46,14 @@ type Props = {
 function ToDoListBodyCard({ todos = [] }: Props) {
   if (todos?.length === 0) {
     return (
-      <div className="flex-1 flex justify-center items-center bg-red-100">
+      <div className="todolist-card__body">
         <p className="text-2xl">Todo list is empty</p>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 bg-red-100 p-2 w-full">
+    <div className="todolist-card__body">
       <ToDoList todos={todos} />
     </div>
   );
