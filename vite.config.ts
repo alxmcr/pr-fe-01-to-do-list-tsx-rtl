@@ -35,12 +35,5 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    component: {
-      devServer: {
-        framework: "react",
-        bundler: "vite",
-        // viteConfig?: Will try to infer, if passed it will be used as is
-      },
-    },
   };
 });
