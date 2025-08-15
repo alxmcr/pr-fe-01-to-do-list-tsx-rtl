@@ -9,16 +9,20 @@ type Props = {
 };
 
 export function ToDoItem(props: Props) {
-  const { dispatch } = React.useContext(ToDoListContext);
+  const { state, dispatch } = React.useContext(ToDoListContext);
+
+  // Find the current todo from context state, fallback to prop if not found
+  const currentTodo =
+    state.todos.find((t) => t.id === props.todo.id) || props.todo;
 
   function handleItemDone() {
     dispatch(toggleToDoItemAction(props.todo));
   }
 
   return (
-    <div className="todolist__todo" id={props.todo.id?.toString()}>
+    <div className="todolist__todo" id={currentTodo.id?.toString()}>
       <div className="todolist__icons">
-        {props.todo.isDone ? (
+        {currentTodo.isDone ? (
           <i
             className="fas fa-check-circle todolist__icon todolist__icon--done"
             onClick={handleItemDone}
@@ -30,7 +34,7 @@ export function ToDoItem(props: Props) {
           ></i>
         )}
       </div>
-      <p className="todolist__text">{props.todo.text}</p>
+      <p className="todolist__text">{currentTodo.text}</p>
     </div>
   );
 }
