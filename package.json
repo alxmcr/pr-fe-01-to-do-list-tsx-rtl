@@ -4,8 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "engines": {
-    "node": ">=24.4.1",
-    "pnpm": ">=10.14.0"
+    "node": ">=24.4.1"
   },
   "scripts": {
     "dev": "vite",
@@ -15,7 +14,8 @@
     "test": "jest",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "cy:run:headless": "cypress run --headless"
+    "cy:run:headless": "cypress run --headless",
+    "cy:run:base": "npx cypress open --config baseUrl=http://localhost:7100"
   },
   "dependencies": {
     "@cypress/vite-plugin-cypress-esm": "^1.1.2",
@@ -42,6 +42,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "babel-jest": "^30.0.5",
     "cypress": "^14.5.4",
+    "dotenv": "^17.2.1",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
