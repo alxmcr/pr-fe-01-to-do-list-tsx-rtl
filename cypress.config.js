@@ -20,6 +20,7 @@ export default defineConfig({
   },
 
   component: {
+    supportFile: "cypress/support/component.ts",
     devServer: {
       framework: "react",
       bundler: "vite",
