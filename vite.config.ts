@@ -20,6 +20,20 @@ export default defineConfig(({ mode }) => {
       watch: {
         usePolling: true,
       },
+      // Add options to reduce warnings
+      hmr: {
+        overlay: false,
+      },
+    },
+    // Add build options to reduce warnings
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // Suppress specific warnings if needed
+          if (warning.code === "CIRCULAR_DEPENDENCY") return;
+          warn(warning);
+        },
+      },
     },
   };
 });
