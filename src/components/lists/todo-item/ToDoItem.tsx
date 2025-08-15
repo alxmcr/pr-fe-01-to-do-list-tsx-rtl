@@ -1,4 +1,7 @@
+import React from "react";
+import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoListContext";
 import type { ToDoItemData } from "../../../services/todo-list-service/IToDoListService";
+import { toggleToDoItemAction } from "../../../store/todolist/todolist.actions";
 import "./ToDoItem.styles.css";
 
 type Props = {
@@ -6,8 +9,10 @@ type Props = {
 };
 
 export function ToDoItem(props: Props) {
+  const { dispatch } = React.useContext(ToDoListContext);
+
   function handleItemDone() {
-    console.log("done!");
+    dispatch(toggleToDoItemAction(props.todo));
   }
 
   return (
