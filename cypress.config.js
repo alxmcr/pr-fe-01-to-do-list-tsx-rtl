@@ -18,4 +18,11 @@ export default defineConfig({
     // Improve performance
     numTestsKeptInMemory: 0,
   },
+
+  component: {
+    devServer: {
+      framework: "react",
+      bundler: "vite",
+    },
+  },
 });
