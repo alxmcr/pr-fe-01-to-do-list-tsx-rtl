@@ -32,18 +32,25 @@ export function ToDoAddForm() {
 
   return (
     <form className="todolist__form" onSubmit={onSubmit}>
-      <label htmlFor="description">Description:</label>
+      <label htmlFor="description" data-cy="item-label-description">
+        Description:
+      </label>
       <input
         type="text"
         className="todolist__input"
         placeholder="Enter the task's description"
         id="description"
         name="description"
+        data-cy="item-input-description"
         required={true}
         value={text}
         onChange={onChangeText}
       />
-      <button type="submit" className="todolist__button">
+      <button
+        type="submit"
+        className="todolist__button"
+        data-cy="input-btn-add-item"
+      >
         <i className="fas fa-plus todolist__icon--plus"></i>
         <span className="todolist__btntext">ADD NEW</span>
       </button>
