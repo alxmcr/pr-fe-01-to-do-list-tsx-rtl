@@ -18,7 +18,7 @@ export function ToDoList(props: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-2 w-full" data-cy="box-todos">
       {props.todos.map((todo: ToDoItemData) => (
         <ToDoItem key={todo.id} todo={todo} />
       ))}
