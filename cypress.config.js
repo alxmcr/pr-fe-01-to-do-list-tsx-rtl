@@ -15,19 +15,7 @@ export default defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: false,
-    // Add options to reduce warnings
-    experimentalModifyObstructiveThirdPartyCode: false,
     // Improve performance
     numTestsKeptInMemory: 0,
   },
-  component: {
-    devServer: {
-      framework: "react",
-      bundler: "vite",
-    },
-    supportFile: "cypress/support/component.ts",
-    specPattern: "src/**/*.cy.{js,jsx,ts,tsx}",
-  },
-  // Global options to reduce warnings
-  experimentalInteractiveRunEvents: false,
 });
