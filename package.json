@@ -18,6 +18,7 @@
     "cy:run:base": "npx cypress open --config baseUrl=http://localhost:7100"
   },
   "dependencies": {
+    "@cypress/vite-dev-server": "^7.0.0",
     "@cypress/vite-plugin-cypress-esm": "^1.1.2",
     "@tailwindcss/vite": "^4.1.12",
     "react": "^19.1.1",
@@ -53,6 +54,6 @@
     "react-test-renderer": "^19.1.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+    "vite": "6.3.5"
   }
 }
