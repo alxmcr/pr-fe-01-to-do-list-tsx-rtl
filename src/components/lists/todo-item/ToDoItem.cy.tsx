@@ -1,8 +1,7 @@
-import React from "react";
 import { mount } from "cypress/react";
 import { mockToDoList } from "../../../mocks/data/mock-to-do-list";
-import { ToDoItem } from "./ToDoItem";
 import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoListContext";
+import { ToDoItem } from "./ToDoItem";
 // Import styles for component testing
 import "./ToDoItem.styles.css";
 
