@@ -10,7 +10,9 @@ export function ToDoList(props: Props) {
   if (props.todos.length === 0) {
     return (
       <div className="flex flex-col gap-2 w-full">
-        <p className="text-2xl">Todo list is empty</p>
+        <p className="text-2xl" data-cy="msg-empty-list">
+          Todo list is empty
+        </p>
       </div>
     );
   }
