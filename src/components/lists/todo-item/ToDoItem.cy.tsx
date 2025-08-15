@@ -1,9 +1,10 @@
+import React from "react";
 import { ToDoItem } from "./ToDoItem";
 import { mockToDoList } from "../../../mocks/data/mock-to-do-list";
 // Import styles for component testing
 import "./ToDoItem.styles.css";
 
-describe("ToDoItem.cy.jsx", () => {
+describe("ToDoItem.cy.tsx", () => {
   it("renders not done item", () => {
     cy.mount(<ToDoItem todo={mockToDoList[0]} />);
 
