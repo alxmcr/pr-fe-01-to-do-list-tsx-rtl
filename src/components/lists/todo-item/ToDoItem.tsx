@@ -20,7 +20,11 @@ export function ToDoItem(props: Props) {
   }
 
   return (
-    <div className="todolist__todo" id={currentTodo.id?.toString()}>
+    <div
+      className="todolist__todo"
+      id={currentTodo.id?.toString()}
+      data-cy="todo-item"
+    >
       <div className="todolist__icons">
         {currentTodo.isDone ? (
           <i
