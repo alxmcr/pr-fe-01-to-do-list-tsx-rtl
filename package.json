@@ -9,9 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "cy:open": "NODE_NO_WARNINGS=1 VITE_APP_PORT=7100 cypress open",
-    "cy:run": "NODE_NO_WARNINGS=1 VITE_APP_PORT=7100 cypress run",
-    "cy:run:headless": "NODE_NO_WARNINGS=1 VITE_APP_PORT=7100 cypress run --headless"
+    "cy:open": "VITE_APP_PORT=7100 cypress open",
+    "cy:run": "VITE_APP_PORT=7100 cypress run",
+    "cy:run:headless": "VITE_APP_PORT=7100 cypress run --headless"
   },
   "dependencies": {
     "@cypress/vite-plugin-cypress-esm": "^1.1.2",
