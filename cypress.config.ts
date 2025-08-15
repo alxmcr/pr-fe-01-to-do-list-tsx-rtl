@@ -1,6 +1,6 @@
-const { defineConfig } = require("cypress");
+import { defineConfig } from "cypress";
 
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
     baseUrl: `http://localhost:${process.env.VITE_APP_PORT || 7100}`,
     supportFile: "cypress/support/e2e.ts",
@@ -9,6 +9,8 @@ module.exports = defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: false,
+    // Add options to reduce warnings
+    experimentalModifyObstructiveThirdPartyCode: false,
   },
   component: {
     devServer: {
@@ -18,4 +20,6 @@ module.exports = defineConfig({
     supportFile: "cypress/support/component.ts",
     specPattern: "src/**/*.cy.{js,jsx,ts,tsx}",
   },
+  // Global options to reduce warnings
+  experimentalInteractiveRunEvents: false,
 });

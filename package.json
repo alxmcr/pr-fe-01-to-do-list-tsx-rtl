@@ -3,15 +3,19 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "engines": {
+    "node": ">=24.4.1",
+    "pnpm": ">=10.14.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "cy:open": "VITE_APP_PORT=7100 cypress open",
-    "cy:run": "VITE_APP_PORT=7100 cypress run",
-    "cy:run:headless": "VITE_APP_PORT=7100 cypress run --headless"
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:headless": "cypress run --headless"
   },
   "dependencies": {
     "@cypress/vite-plugin-cypress-esm": "^1.1.2",
