@@ -21,8 +21,12 @@ function ToDoListHeaderCard() {
 
   return (
     <header className="todolist-card__header">
-      <p className="todolist-card__day">{dateFormatted}</p>
-      <p className="todolist-card__nameday">{nameDay}</p>
+      <p className="todolist-card__day" data-cy="card-day">
+        {dateFormatted}
+      </p>
+      <p className="todolist-card__nameday" data-cy="card-name-day">
+        {nameDay}
+      </p>
     </header>
   );
 }
@@ -47,7 +51,9 @@ function ToDoListBodyCard({ todos = [] }: Props) {
   if (todos?.length === 0) {
     return (
       <div className="todolist-card__body">
-        <p className="text-2xl">Todo list is empty</p>
+        <p className="text-2xl" data-cy="card-empty-msg">
+          Todo list is empty
+        </p>
       </div>
     );
   }
