@@ -1,0 +1,11 @@
+name: git-act-react-testing-library
+
+# Specifies the trigger for this workflow.
+# https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushpull_requestpull_request_targetpathspaths-ignore
+on: [pull_request]
+
+# Groups together all the jobs that run in the workflow.
+jobs:
+  jb-test-rtl:
+    # This means that the job will execute on a fresh virtual machine hosted by GitHub
+    run
