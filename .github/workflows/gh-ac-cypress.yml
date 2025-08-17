@@ -5,38 +5,33 @@ on: [pull_request]
 jobs:
   install:
     runs-on: ubuntu-24.04
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.value }}
-
-    strategy:
-      matrix:
-        node-version: [24]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js and pnpm
-        uses: ./.github/actions/setup-node
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          version: 10
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Approve build scripts
+      - name: Approve pnpm builds
         run: pnpm approve-builds
-
-      - name: Generate cache key
-        id: cache-key
-        run: echo "value=${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
 
       - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
+          # Disable running of tests within install job
           runTests: false
           build: pnpm run build
-          install-command: pnpm install
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
@@ -44,14 +39,6 @@ jobs:
           name: build
           if-no-files-found: error
           path: dist
-
-      - name: Cache Cypress
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/Cypress
-            node_modules
-          key: cypress-${{ steps.cache-key.outputs.value }}
 
   cypress-run:
     runs-on: ubuntu-24.04
