@@ -28,19 +28,40 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Approve pnpm builds
+        run: pnpm approve-builds
+
+      - name: Debug environment
+        run: |
+          echo "Node version: $(node --version)"
+          echo "pnpm version: $(pnpm --version)"
+          echo "Current directory: $(pwd)"
+          echo "Contents: $(ls -la)"
+
+      - name: Verify Cypress installation
+        run: |
+          npx cypress verify
+          npx cypress info
+
       - name: Cypress install
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           # Disable running of tests within install job
           runTests: false
-          build: npm run build
+          build: pnpm run build
+          # Cache Cypress binary
+          cache: "npm"
+          # Add explicit Cypress version
+          version: 14.5.4
+          # Add additional configuration for better reliability
+          install-command: "pnpm install"
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
         with:
           name: build
           if-no-files-found: error
-          path: build
+          path: dist
 
   cypress-run:
     runs-on: ubuntu-24.04
@@ -48,18 +69,64 @@ jobs:
     # previous job
     needs: install
 
+    env:
+      # Set the port for Vite preview server
+      VITE_APP_PORT: 4173
+      # Set Cypress to use the same port
+      CYPRESS_VITE_APP_PORT: 4173
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Approve pnpm builds
+        run: pnpm approve-builds
+
+      - name: Debug environment
+        run: |
+          echo "Node version: $(node --version)"
+          echo "pnpm version: $(pnpm --version)"
+          echo "Current directory: $(pwd)"
+          echo "Contents: $(ls -la)"
+
+      - name: Verify Cypress installation
+        run: |
+          npx cypress verify
+          npx cypress info
 
       - name: Download the build folder
         uses: actions/download-artifact@v4
         with:
           name: build
-          path: build
+          path: dist
 
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
-          start: pnpm start
+          start: pnpm run preview
           browser: chrome
+          # Cache Cypress binary
+          cache: "npm"
+          # Wait for the preview server to be ready (Vite preview default port)
+          wait-on: "http://localhost:4173"
+          # Add some additional configuration for better reliability
+          record: false
+          parallel: false
+          # Add explicit Cypress version
+          version: 14.5.4
+          # Add additional configuration for better reliability
+          install-command: "pnpm install"
