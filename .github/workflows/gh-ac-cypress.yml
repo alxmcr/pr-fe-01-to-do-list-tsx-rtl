@@ -52,14 +52,8 @@ jobs:
           # Disable running of tests within install job
           runTests: false
           build: pnpm run build
-          # Use pnpm for caching and installation
-          cache: "pnpm"
-          # Add explicit Cypress version
-          version: 14.5.4
           # Use pnpm for installation
           install-command: "pnpm install"
-          # Ensure Cypress binary is available
-          preinstall: "pnpm exec cypress install"
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
@@ -127,16 +121,10 @@ jobs:
         with:
           start: pnpm run preview
           browser: chrome
-          # Use pnpm for caching
-          cache: "pnpm"
           # Wait for the preview server to be ready (Vite preview default port)
           wait-on: "http://localhost:4173"
           # Add some additional configuration for better reliability
           record: false
           parallel: false
-          # Add explicit Cypress version
-          version: 14.5.4
           # Use pnpm for installation
           install-command: "pnpm install"
-          # Ensure Cypress binary is available
-          preinstall: "pnpm exec cypress install"
