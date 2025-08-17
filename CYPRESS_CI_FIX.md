@@ -1,105 +1,176 @@
-# Cypress CI Build Fix
+# Cypress CI/CD Fix Documentation
 
-## Issues Resolved
+## Problem Description
 
-### 1. Case Sensitivity Mismatch
+The original GitHub Actions workflow was failing with the following error:
 
-**Problem**: The build was failing due to a case sensitivity mismatch in CSS file imports.
+```
+The cypress npm package is installed, but the Cypress binary is missing.
+We expected the binary to be installed here: /home/runner/.cache/Cypress/14.5.4/Cypress/Cypress
+```
 
-- File name: `TodoListCard.styles.css` (lowercase 'o')
-- Import statement: `import "./ToDoListCard.styles.css"` (uppercase 'O')
+This error occurs because:
 
-**Solution**: Updated the import statement in `TodoListCard.tsx` to match the actual file name.
+1. The Cypress binary directory is not being properly cached
+2. The cache path `/home/runner/.cache/Cypress` is missing from the workflow
+3. The workflow doesn't handle Cypress installation failures gracefully
 
-### 2. Port Configuration Issues
+## Solutions Implemented
 
-**Problem**: Cypress was trying to connect to port 7100 instead of the preview server port 4173.
+### 1. Refactored Main Workflow (`gh-ac-cypress.yml`)
 
-- `cypress.env.json` was setting `VITE_APP_PORT` and `CYPRESS_VITE_APP_PORT` to 7100
-- This conflicted with the Vite preview server default port 4173
+The main workflow has been completely refactored to:
 
-**Solution**: Updated `cypress.env.json` to use port 4173 for both variables.
+- **Proper Cypress Caching**: Cache both `~/.cache/Cypress` and `node_modules/cypress`
+- **Better Error Handling**: Added verification steps and better server startup logic
+- **Improved Performance**: Better cache keys and restore strategies
+- **Robust Testing**: Separate component and E2E test runs with proper server management
 
-### 3. GitHub Actions Workflow Optimization
+### 2. Backup Cache Fix Workflow (`cypress-cache-fix.yml`)
 
-**Problem**: The original workflow was complex with unnecessary steps and debug information.
+A specialized workflow that specifically addresses Cypress caching issues:
 
-**Solution**: Refactored the workflow following Cypress best practices:
+- **Explicit Binary Installation**: Forces `npx cypress install` if cache miss
+- **Multiple Cache Paths**: Caches all possible Cypress binary locations
+- **Enhanced Verification**: Comprehensive Cypress installation verification
+- **Robust Server Startup**: Multiple retry attempts for server readiness
 
-- Simplified the workflow structure
-- Added parallelization support (3 containers)
-- Removed unnecessary debug steps
-- Improved caching and artifact handling
+### 3. Enhanced Cypress Configuration
 
-## Files Modified
+Updated `cypress.config.js` with:
 
-1. **`src/components/cards/todo-list-card/TodoListCard.tsx`**
+- **CI Optimizations**: Retry logic, better timeouts, performance settings
+- **Error Handling**: Screenshots and videos enabled for debugging
+- **Module Resolution**: Proper alias configuration for TypeScript paths
 
-   - Fixed CSS import path case sensitivity
+### 4. Improved Package Scripts
 
-2. **`cypress.env.json`**
+Added new scripts to `package.json`:
 
-   - Updated port configuration from 7100 to 4173
+- `cy:verify`: Verify Cypress installation
+- `cy:cache:list`: List Cypress cache contents
+- `cy:cache:path`: Show Cypress cache path
+- `cy:run:e2e`: Run E2E tests specifically
 
-3. **`cypress.config.js`**
+## Usage
 
-   - Updated default port from 3000 to 4173
+### Option 1: Use the Main Workflow (Recommended)
 
-4. **`.github/workflows/gh-ac-cypress.yml`**
+The refactored `gh-ac-cypress.yml` should work for most cases and provides the best performance.
 
-   - Refactored to follow Cypress best practices
-   - Added parallelization support
-   - Simplified workflow structure
+### Option 2: Use the Cache Fix Workflow
 
-5. **`package.json`**
-   - Added new test scripts for easier testing
-   - Updated existing scripts to use correct ports
+If you continue to experience caching issues, use `cypress-cache-fix.yml` which provides:
 
-## New Test Scripts
+- More aggressive caching strategies
+- Explicit binary installation
+- Better error recovery
 
-- `pnpm run cy:test:e2e` - Build, start preview server, run E2E tests, and cleanup
-- `pnpm run cy:test:all` - Run both component and E2E tests
-- `cy:run:base` - Updated to use correct port 4173
+### Option 3: Local Testing
 
-## Testing Locally
-
-### Component Tests
+Test the setup locally before pushing:
 
 ```bash
+# Verify Cypress installation
+pnpm run cy:verify
+
+# Run component tests
 pnpm run cy:run:component
-```
 
-### E2E Tests
-
-```bash
+# Run E2E tests
 pnpm run cy:test:e2e
-```
 
-### All Tests
-
-```bash
+# Run all tests
 pnpm run cy:test:all
 ```
 
-## CI/CD Workflow
+## Key Changes Made
 
-The GitHub Actions workflow now:
+### GitHub Actions Workflow
 
-1. **Install Job**: Installs dependencies and builds the application
-2. **Cypress Run Job**: Runs tests in parallel across 3 containers
-3. **Proper Caching**: Uses pnpm caching for dependencies
-4. **Artifact Handling**: Builds once, distributes to test containers
+1. **Proper Cache Paths**: Added `~/.cache/Cypress` and `/home/runner/.cache/Cypress`
+2. **Cache Keys**: Better cache key strategies using `pnpm-lock.yaml` hash
+3. **Verification Steps**: Added Cypress installation verification
+4. **Server Management**: Improved preview server startup with health checks
+5. **Artifact Uploads**: Better handling of screenshots, videos, and build artifacts
 
-## Verification
+### Cypress Configuration
 
-- ✅ Build passes locally: `pnpm run build`
-- ✅ Component tests pass: `pnpm run cy:run:component`
-- ✅ E2E tests pass: `pnpm run cy:test:e2e`
-- ✅ All tests pass: `pnpm run cy:test:all`
+1. **CI Optimizations**: Retry logic, timeouts, performance settings
+2. **Error Handling**: Screenshots and videos enabled
+3. **Module Resolution**: Proper TypeScript path aliases
+4. **Security Settings**: Disabled web security for testing
 
-## Next Steps
+### Package Scripts
 
-1. Commit and push these changes
-2. The GitHub Actions workflow should now pass successfully
-3. Consider adding more comprehensive E2E tests
-4. Monitor CI performance and adjust parallelization as needed
+1. **New Commands**: Added verification and cache management scripts
+2. **Better E2E Testing**: Improved E2E test execution
+3. **Error Recovery**: Better handling of test failures
+
+## Troubleshooting
+
+### If Cypress Still Fails to Install
+
+1. **Check Cache Keys**: Ensure cache keys are unique and properly formatted
+2. **Verify Dependencies**: Check that all dependencies are properly installed
+3. **Use Cache Fix Workflow**: Switch to the specialized workflow if issues persist
+4. **Check Node Version**: Ensure Node.js 24 is being used consistently
+
+### Common Issues
+
+1. **Cache Miss**: The workflow will automatically reinstall Cypress if cache is missing
+2. **Server Startup**: The workflow includes multiple retry attempts for server readiness
+3. **Binary Verification**: Comprehensive verification steps ensure proper installation
+
+### Performance Tips
+
+1. **Cache Hit Rate**: Monitor cache hit rates in GitHub Actions logs
+2. **Parallel Execution**: Consider enabling parallel test execution for larger test suites
+3. **Artifact Cleanup**: Regularly clean up old artifacts to save storage
+
+## Monitoring and Debugging
+
+### GitHub Actions Logs
+
+Look for these key indicators:
+
+- ✅ `Cache hit occurred on the primary key`
+- ✅ `Cypress binary installed successfully`
+- ✅ `Server is running on port 4173`
+- ❌ `Cache miss occurred on the primary key`
+- ❌ `The Cypress binary is missing`
+
+### Local Debugging
+
+Use these commands to debug locally:
+
+```bash
+# Check Cypress installation
+pnpm run cy:verify
+
+# Check cache status
+pnpm run cy:cache:list
+pnpm run cy:cache:path
+
+# Run specific test types
+pnpm run cy:run:component
+pnpm run cy:run:e2e
+```
+
+## Future Improvements
+
+1. **Parallel Testing**: Enable parallel test execution for faster CI/CD
+2. **Test Splitting**: Implement test splitting for better load distribution
+3. **Performance Monitoring**: Add performance metrics and monitoring
+4. **Cache Analytics**: Track cache hit rates and optimize accordingly
+
+## Support
+
+If you continue to experience issues:
+
+1. Check the GitHub Actions logs for specific error messages
+2. Verify that all dependencies are properly installed
+3. Test the setup locally using the provided scripts
+4. Consider switching between the main and cache fix workflows
+
+The refactored workflows should resolve the Cypress binary missing error and provide a more robust CI/CD experience.

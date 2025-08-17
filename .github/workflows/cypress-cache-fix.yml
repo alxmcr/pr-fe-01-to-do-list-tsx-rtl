@@ -1,9 +1,9 @@
-name: Cypress Tests
+name: Cypress Cache Fix
 
 on: [pull_request]
 
 jobs:
-  cypress-tests:
+  cypress-cache-fix:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -42,24 +42,33 @@ jobs:
       - name: Build application
         run: pnpm run build
 
-      - name: Cache Cypress binary
+      # Explicitly cache Cypress binary directory
+      - name: Cache Cypress binary directory
         uses: actions/cache@v4
         with:
           path: |
             ~/.cache/Cypress
             node_modules/cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
+            /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-cypress-
+            ${{ runner.os }}-cypress-binary-
+
+      # Force Cypress installation if cache miss
+      - name: Install Cypress binary
+        run: |
+          echo "Installing Cypress binary..."
+          npx cypress install
+          echo "Cypress binary installed successfully"
 
       - name: Verify Cypress installation
         run: |
+          echo "Cypress version:"
+          npx cypress --version
           echo "Cypress cache path:"
-          pnpm run cy:cache:path
-          echo "Cypress cache list:"
-          pnpm run cy:cache:list
+          npx cypress cache path
           echo "Verifying Cypress binary:"
-          pnpm run cy:verify
+          npx cypress verify
 
       - name: Run Cypress Component Tests
         uses: cypress-io/github-action@v6
@@ -77,11 +86,17 @@ jobs:
         run: |
           pnpm run preview &
           echo "Waiting for server to start..."
-          sleep 15
+          sleep 20
           echo "Checking if server is running..."
-          curl -f http://localhost:4173 || echo "Server not ready yet, waiting more..."
-          sleep 10
-          echo "Server should be running on port 4173"
+          for i in {1..5}; do
+            if curl -f http://localhost:4173 > /dev/null 2>&1; then
+              echo "Server is running on port 4173"
+              break
+            else
+              echo "Attempt $i: Server not ready yet, waiting..."
+              sleep 5
+            fi
+          done
 
       - name: Run Cypress E2E Tests
         uses: cypress-io/github-action@v6
