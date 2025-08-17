@@ -43,39 +43,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-24.04
     needs: install
-    strategy:
-      matrix:
-        node-version: [24]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js and pnpm
-        uses: ./.github/actions/setup-node
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Restore Cypress cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/Cypress
-            node_modules
-          key: cypress-${{ needs.install.outputs.cache-key }}
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Download the build folder
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: dist
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
+          build: pnpm run build
           start: pnpm run preview
-          browser: chrome
-          install-command: pnpm install
