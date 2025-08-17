@@ -6,7 +6,7 @@ describe("ToDoAddForm component", () => {
     render(<ToDoAddForm />);
 
     // UI Elements
-    const labelDescription = screen.getByText(/Descripxtion/i);
+    const labelDescription = screen.getByText(/Description/i);
     const btnAddNew = screen.getByText(/ADD NEW/i);
 
     // Expect
