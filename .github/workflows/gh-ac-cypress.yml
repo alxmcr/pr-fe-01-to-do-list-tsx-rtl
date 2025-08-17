@@ -5,3 +5,32 @@ on: [pull_request]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [24]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/actions-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{matrix.node-version}}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: pnpm run build
+          start: pnpm start
+          browser: chrome
