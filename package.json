@@ -1,7 +1,7 @@
 {
   "name": "pr-fe-01-to-do-list-tsx-rtl",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "engines": {
     "node": ">=24.4.1"
@@ -16,7 +16,9 @@
     "cy:run": "cypress run",
     "cy:run:headless": "cypress run --headless",
     "cy:run:component": "cypress run --component --headless",
-    "cy:run:base": "npx cypress open --config baseUrl=http://localhost:7100"
+    "cy:run:base": "npx cypress open --config baseUrl=http://localhost:4173",
+    "cy:test:e2e": "pnpm run build && pnpm run preview & sleep 5 && pnpm run cy:run:headless && pkill -f 'vite preview'",
+    "cy:test:all": "pnpm run cy:run:component && pnpm run cy:test:e2e"
   },
   "dependencies": {
     "@cypress/vite-dev-server": "^7.0.0",

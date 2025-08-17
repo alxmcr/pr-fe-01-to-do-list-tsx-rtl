@@ -14,6 +14,12 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    css: {
+      // Ensure CSS is properly processed
+      modules: {
+        localsConvention: "camelCase",
+      },
+    },
     server: {
       host: true,
       port: parseInt(env.VITE_APP_PORT) || 3000,
