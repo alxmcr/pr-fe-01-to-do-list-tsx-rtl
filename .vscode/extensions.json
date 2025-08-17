@@ -7,6 +7,7 @@
     "karyfoundation.theme-karyfoundation-themes",
     "cipchk.cssrem",
     "tamasfe.even-better-toml",
-    "vscode-icons-team.vscode-icons"
+    "vscode-icons-team.vscode-icons",
+    "GitHub.vscode-github-actions"
   ]
 }
