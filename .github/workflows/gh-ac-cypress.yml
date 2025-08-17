@@ -20,8 +20,14 @@ jobs:
           node-version: 24
           cache: "pnpm"
 
+      - name: Configure pnpm side-effects-cache
+        run: pnpm config set side-effects-cache false --location project
+
       - name: Install dependencies
         run: pnpm install
+
+      - name: Install Cypress with build approval
+        run: pnpm --allow-build=cypress add --save-dev cypress
 
       - name: Approve pnpm builds
         run: pnpm approve-builds
