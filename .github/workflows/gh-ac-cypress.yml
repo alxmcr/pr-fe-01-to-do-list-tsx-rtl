@@ -1,0 +1,7 @@
+name: git-act-react-testing-library
+
+on: [pull_request]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
