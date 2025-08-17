@@ -5,6 +5,11 @@ on: [pull_request]
 jobs:
   install:
     runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        node-version: [24]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -14,17 +19,11 @@ jobs:
         with:
           version: 10
 
-      - name: Use Node.js 24
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: ${{matrix.node-version}}
           cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Approve pnpm builds
-        run: pnpm approve-builds
 
       - name: Cypress install
         uses: cypress-io/github-action@v6
@@ -43,33 +42,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-24.04
     needs: install
-    strategy:
-      # don't fail the entire matrix on failure
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Use Node.js 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Approve pnpm builds
-        run: pnpm approve-builds
 
       - name: Download the build folder
         uses: actions/download-artifact@v4
@@ -82,8 +58,3 @@ jobs:
         with:
           start: pnpm run preview
           browser: chrome
-          wait-on: "http://localhost:4173"
-          record: false
-          parallel: true
-          group: "UI-Chrome"
-          install-command: "pnpm install"
