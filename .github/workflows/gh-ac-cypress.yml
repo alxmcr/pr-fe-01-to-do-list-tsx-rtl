@@ -51,9 +51,7 @@ jobs:
         with:
           # Disable running of tests within install job
           runTests: false
-          build: pnpm run build
-          # Use pnpm for installation
-          install-command: "pnpm install"
+          build: npm run build
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
