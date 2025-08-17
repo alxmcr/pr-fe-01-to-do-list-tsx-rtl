@@ -25,21 +25,12 @@ jobs:
           node-version: ${{matrix.node-version}}
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Approve pnpm builds
-        run: pnpm approve-builds
-
       - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
           # Disable running of tests within install job
           runTests: false
           build: pnpm run build
-
-      - name: Verify Cypress binary (optional)
-        run: npx cypress verify
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
@@ -65,5 +56,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: pnpm start
+          start: pnpm run preview
           browser: chrome
