@@ -31,7 +31,18 @@ jobs:
         with:
           # Disable running of tests within install job
           runTests: false
-          build: pnpm run build
+          build: npm run build
+
+      - name: Clear Cypress cache
+        run: npx cypress cache clear
+
+      # 👇 This ensures the Cypress binary is downloaded
+      - name: Install Cypress binary
+        run: npx cypress install
+
+      # 👇 Optional but helpful for debugging install issues
+      - name: Verify Cypress binary
+        run: npx cypress verify
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
@@ -45,8 +56,17 @@ jobs:
     needs: install
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: dist
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: pnpm run build
           start: pnpm run preview
+          browser: chrome
