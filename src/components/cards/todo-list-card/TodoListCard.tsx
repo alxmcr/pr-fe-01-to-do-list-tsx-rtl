@@ -6,7 +6,7 @@ import {
 import { ToDoListContext } from "../../../providers/to-do-list-provider/ToDoListContext";
 import { ToDoAddForm } from "../../forms/todo-add-form/ToDoAddForm";
 import { ToDoList } from "../../lists/todo-list/ToDoList";
-import "./ToDoListCard.styles.css";
+import "./TodoListCard.styles.css";
 import type { ToDoItemData } from "../../../services/todo-list-service/IToDoListService";
 
 function ToDoListHeaderCard() {

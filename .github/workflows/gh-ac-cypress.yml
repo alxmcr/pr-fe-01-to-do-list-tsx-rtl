@@ -1,15 +1,10 @@
-name: git-act-react-testing-library
+name: Cypress Tests
 
 on: [pull_request]
 
 jobs:
   install:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [24]
-
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,10 +14,10 @@ jobs:
         with:
           version: 10
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: ${{matrix.node-version}}
+          node-version: 24
           cache: "pnpm"
 
       - name: Install dependencies
@@ -30,21 +25,6 @@ jobs:
 
       - name: Approve pnpm builds
         run: pnpm approve-builds
-
-      - name: Debug environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "pnpm version: $(pnpm --version)"
-          echo "Current directory: $(pwd)"
-          echo "Contents: $(ls -la)"
-
-      - name: Install Cypress binary
-        run: pnpm exec cypress install
-
-      - name: Verify Cypress installation
-        run: |
-          pnpm exec cypress verify
-          pnpm exec cypress info
 
       - name: Cypress install
         uses: cypress-io/github-action@v6
@@ -62,15 +42,13 @@ jobs:
 
   cypress-run:
     runs-on: ubuntu-24.04
-
-    # previous job
     needs: install
-
-    env:
-      # Set the port for Vite preview server
-      VITE_APP_PORT: 4173
-      # Set Cypress to use the same port
-      CYPRESS_VITE_APP_PORT: 4173
+    strategy:
+      # don't fail the entire matrix on failure
+      fail-fast: false
+      matrix:
+        # run copies of the current job in parallel
+        containers: [1, 2, 3]
 
     steps:
       - name: Checkout code
@@ -93,21 +71,6 @@ jobs:
       - name: Approve pnpm builds
         run: pnpm approve-builds
 
-      - name: Debug environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "pnpm version: $(pnpm --version)"
-          echo "Current directory: $(pwd)"
-          echo "Contents: $(ls -la)"
-
-      - name: Install Cypress binary
-        run: pnpm exec cypress install
-
-      - name: Verify Cypress installation
-        run: |
-          pnpm exec cypress verify
-          pnpm exec cypress info
-
       - name: Download the build folder
         uses: actions/download-artifact@v4
         with:
@@ -119,10 +82,8 @@ jobs:
         with:
           start: pnpm run preview
           browser: chrome
-          # Wait for the preview server to be ready (Vite preview default port)
           wait-on: "http://localhost:4173"
-          # Add some additional configuration for better reliability
           record: false
-          parallel: false
-          # Use pnpm for installation
+          parallel: true
+          group: "UI-Chrome"
           install-command: "pnpm install"

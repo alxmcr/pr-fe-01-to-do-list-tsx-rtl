@@ -7,7 +7,7 @@ dotenv.config();
 export default defineConfig({
   e2e: {
     baseUrl: `http://localhost:${
-      process.env.VITE_APP_PORT || process.env.CYPRESS_VITE_APP_PORT || 3000
+      process.env.VITE_APP_PORT || process.env.CYPRESS_VITE_APP_PORT || 4173
     }`,
     supportFile: "cypress/support/e2e.ts",
     specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
