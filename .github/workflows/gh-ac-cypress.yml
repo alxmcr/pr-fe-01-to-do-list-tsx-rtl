@@ -31,7 +31,7 @@ jobs:
         with:
           # Disable running of tests within install job
           runTests: false
-          build: npm run build
+          build: pnpm run build
 
       # 👇 Optional but helpful for debugging install issues
       - name: Verify Cypress binary
