@@ -16,9 +16,13 @@
     "cy:run": "cypress run",
     "cy:run:headless": "cypress run --headless",
     "cy:run:component": "cypress run --component --headless",
+    "cy:run:e2e": "cypress run --e2e --headless",
     "cy:run:base": "npx cypress open --config baseUrl=http://localhost:4173",
-    "cy:test:e2e": "pnpm run build && pnpm run preview & sleep 5 && pnpm run cy:run:headless && pkill -f 'vite preview'",
-    "cy:test:all": "pnpm run cy:run:component && pnpm run cy:test:e2e"
+    "cy:test:e2e": "pnpm run build && pnpm run preview & sleep 5 && pnpm run cy:run:e2e && pkill -f 'vite preview'",
+    "cy:test:all": "pnpm run cy:run:component && pnpm run cy:test:e2e",
+    "cy:verify": "cypress verify",
+    "cy:cache:list": "cypress cache list",
+    "cy:cache:path": "cypress cache path"
   },
   "dependencies": {
     "@cypress/vite-dev-server": "^7.0.0",
