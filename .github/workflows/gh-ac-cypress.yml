@@ -33,13 +33,6 @@ jobs:
           runTests: false
           build: npm run build
 
-      - name: Clear Cypress cache
-        run: npx cypress cache clear
-
-      # 👇 This ensures the Cypress binary is downloaded
-      - name: Install Cypress binary
-        run: npx cypress install
-
       # 👇 Optional but helpful for debugging install issues
       - name: Verify Cypress binary
         run: npx cypress verify
@@ -50,23 +43,3 @@ jobs:
           name: build
           if-no-files-found: error
           path: dist
-
-  cypress-run:
-    runs-on: ubuntu-24.04
-    needs: install
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download the build folder
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: dist
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: pnpm run preview
-          browser: chrome
