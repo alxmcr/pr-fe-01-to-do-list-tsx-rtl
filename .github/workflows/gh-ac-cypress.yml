@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Approve pnpm builds
+        run: pnpm approve-builds
+
       - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
