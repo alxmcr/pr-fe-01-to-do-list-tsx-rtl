@@ -25,7 +25,6 @@
     "cy:cache:path": "cypress cache path"
   },
   "dependencies": {
-    "@cypress/vite-dev-server": "^7.0.0",
     "@cypress/vite-plugin-cypress-esm": "^1.1.2",
     "@tailwindcss/vite": "^4.1.12",
     "react": "^19.1.1",
