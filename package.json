@@ -57,10 +57,21 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
+    "jest-junit": "^16.0.0",
     "react-test-renderer": "^19.1.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "6.3.5"
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": "./test-results",
+    "outputName": "jest-junit.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
   }
 }
