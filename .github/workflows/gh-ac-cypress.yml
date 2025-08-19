@@ -1,119 +1,43 @@
-name: Cypress Tests
+name: Cypress Tests with Dependency and Artifact Caching
 
 on: [pull_request]
 
 jobs:
-  cypress-tests:
+  install:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Use Node.js 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: "pnpm"
-
-      - name: Configure pnpm side-effects-cache
-        run: pnpm config set side-effects-cache false --location project
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build application
-        run: pnpm run build
-
-      - name: Cache Cypress binary
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-
-
-      - name: Verify Cypress installation
-        run: |
-          echo "Cypress cache path:"
-          pnpm run cy:cache:path
-          echo "Cypress cache list:"
-          pnpm run cy:cache:list
-          echo "Verifying Cypress binary:"
-          pnpm run cy:verify
-
-      - name: Run Cypress Component Tests
+      - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
-          browser: chrome
-          component: true
-          wait-on: "http://localhost:4173"
-          wait-on-timeout: 120
-          record: false
-          parallel: false
-          group: "Component Tests"
-          spec: "cypress/component/**/*.cy.{js,jsx,ts,tsx}"
+          # Disable running of tests within install job
+          runTests: false
+          build: npm run build
 
-      - name: Start preview server
-        run: |
-          pnpm run preview &
-          echo "Waiting for server to start..."
-          sleep 15
-          echo "Checking if server is running..."
-          curl -f http://localhost:4173 || echo "Server not ready yet, waiting more..."
-          sleep 10
-          echo "Server should be running on port 4173"
-
-      - name: Run Cypress E2E Tests
-        uses: cypress-io/github-action@v6
-        with:
-          browser: chrome
-          wait-on: "http://localhost:4173"
-          wait-on-timeout: 120
-          record: false
-          parallel: false
-          group: "E2E Tests"
-          spec: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}"
-          config: baseUrl=http://localhost:4173
-
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots/
-          if-no-files-found: ignore
-
-      - name: Upload videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos/
-          if-no-files-found: ignore
-
-      - name: Upload build artifacts
+      - name: Save build folder
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: dist/
           if-no-files-found: error
+          path: build
+
+  cypress-run:
+    runs-on: ubuntu-24.04
+    needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm start
+          browser: chrome

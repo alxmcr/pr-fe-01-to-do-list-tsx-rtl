@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "pflannery.vscode-versionlens",
     "graphql.vscode-graphql",
     "astro-build.houston",
     "mvllow.rose-pine",
