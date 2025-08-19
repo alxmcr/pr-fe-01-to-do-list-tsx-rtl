@@ -30,8 +30,8 @@ jobs:
       - name: Read test results
         id: get-results
         run: |
-          PASSED=$(grep -oP 'testsuite tests="\K[0-9]+' ./test-results/jest-junit.xml)
-          FAILED=$(grep -oP 'failures="\K[0-9]+' ./test-results/jest-junit.xml)
+          PASSED=$(sed -n 's/.*tests="\([0-9]*\)".*/\1/p' ./test-results/jest-junit.xml | head -1)
+          FAILED=$(sed -n 's/.*failures="\([0-9]*\)".*/\1/p' ./test-results/jest-junit.xml | head -1)
           echo "PASSED=$PASSED" >> $GITHUB_OUTPUT
           echo "FAILED=$FAILED" >> $GITHUB_OUTPUT
 
