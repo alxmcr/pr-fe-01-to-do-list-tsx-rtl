@@ -21,33 +21,35 @@ jobs:
         run: mkdir -p cypress/results
 
       - name: Run Cypress Component Tests
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run cy:run:component
-          browser: chrome
-          config: video=false
-          install: false
-          # Output results to JUnit XML in the created directory
-          command: npx cypress run --reporter junit --reporter-options "mochaFile=cypress/results/results.xml"
-        continue-on-error: true
+        run: |
+          npx cypress run --component --browser chrome \
+          --reporter junit --reporter-options "mochaFile=cypress/results/results.xml,toConsole=true"
+
+      - name: Install xmlstarlet
+        run: sudo apt-get install -y xmlstarlet
 
       - name: Parse Cypress test results
         id: cypress-results
         run: |
-          # Check if results file exists
           if [ -f "cypress/results/results.xml" ]; then
-            PASSED=$(grep -o 'tests="[0-9]*"' "cypress/results/results.xml" | head -1 | grep -o '[0-9]*' || echo "0")
-            FAILED=$(grep -o 'failures="[0-9]*"' "cypress/results/results.xml" | head -1 | grep -o '[0-9]*' || echo "0")
+            PASSED=$(xmlstarlet sel -t -v "testsuites/@tests" cypress/results/results.xml)
+            FAILED=$(xmlstarlet sel -t -v "testsuites/@failures" cypress/results/results.xml)
           else
-            echo "No Cypress results file found"
             PASSED="0"
             FAILED="0"
           fi
           echo "PASSED=$PASSED" >> $GITHUB_OUTPUT
           echo "FAILED=$FAILED" >> $GITHUB_OUTPUT
 
+      - name: Upload Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-results
+          path: cypress/results/results.xml
+
       - name: Comment on PR with Cypress results
-        if: github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -68,22 +70,24 @@ jobs:
             `;
 
             const { data: comments } = await github.rest.issues.listComments({
-                ...context.repo,
-                issue_number: context.issue.number,
+              ...context.repo,
+              issue_number: context.issue.number,
             });
 
-            const botComment = comments.find(comment => comment.body.includes('### 🌐 Cypress Test Results'));
+            const botComment = comments.find(comment =>
+              comment.body.includes('### 🌐 Cypress: Component - Test Results')
+            );
 
             if (botComment) {
-                await github.rest.issues.updateComment({
+              await github.rest.issues.updateComment({
                 ...context.repo,
                 comment_id: botComment.id,
                 body
-                });
+              });
             } else {
-                await github.rest.issues.createComment({
+              await github.rest.issues.createComment({
                 ...context.repo,
                 issue_number: context.issue.number,
                 body
-                });
+              });
             }
