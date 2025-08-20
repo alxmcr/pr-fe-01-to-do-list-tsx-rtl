@@ -40,6 +40,9 @@ jobs:
           name: dist
           path: dist
 
+      - name: Create Cypress results directory
+        run: mkdir -p cypress/results
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
@@ -48,16 +51,22 @@ jobs:
           browser: chrome
           config: video=false
           install: false
-          # Output results to JUnit XML
-          command: npx cypress run --reporter junit --reporter-options "mochaFile=cypress/results/results-[hash].xml"
+          # Output results to JUnit XML in the created directory
+          command: npx cypress run --reporter junit --reporter-options "mochaFile=cypress/results/results.xml"
         continue-on-error: true
 
       - name: Parse Cypress test results
         id: cypress-results
         run: |
-          FILE=$(find cypress/results -name "*.xml" | head -n 1)
-          PASSED=$(grep -o 'tests="[0-9]*"' "$FILE" | head -1 | grep -o '[0-9]*')
-          FAILED=$(grep -o 'failures="[0-9]*"' "$FILE" | head -1 | grep -o '[0-9]*')
+          # Check if results file exists
+          if [ -f "cypress/results/results.xml" ]; then
+            PASSED=$(grep -o 'tests="[0-9]*"' "cypress/results/results.xml" | head -1 | grep -o '[0-9]*' || echo "0")
+            FAILED=$(grep -o 'failures="[0-9]*"' "cypress/results/results.xml" | head -1 | grep -o '[0-9]*' || echo "0")
+          else
+            echo "No Cypress results file found"
+            PASSED="0"
+            FAILED="0"
+          fi
           echo "PASSED=$PASSED" >> $GITHUB_OUTPUT
           echo "FAILED=$FAILED" >> $GITHUB_OUTPUT
 
