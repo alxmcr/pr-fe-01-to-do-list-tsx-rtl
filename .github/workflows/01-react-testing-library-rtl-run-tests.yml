@@ -1,4 +1,4 @@
-name: git-act-react-testing-library
+name: React Testing Library - Run Tests
 
 # Specifies the trigger for this workflow.
 # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushpull_requestpull_request_targetpathspaths-ignore
