@@ -1,13 +1,11 @@
 name: React Testing Library - Run Tests
 
-# Specifies the trigger for this workflow.
-# https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushpull_requestpull_request_targetpathspaths-ignore
-on: [pull_request]
+on:
+  pull_request:
 
-# Groups together all the jobs that run in the workflow.
 jobs:
   jb-test-rtl:
-    # This means that the job will execute on a fresh virtual machine hosted by GitHub
+    name: jb-test-rtl # Ensures consistent name in branch protection
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,6 +15,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: npm ci, build and test
         run: |
