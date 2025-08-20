@@ -1,4 +1,4 @@
-name: Test and Comment on PR
+name: React Testing Library - Run Tests -- Test and Comment on PR
 
 permissions:
   pull-requests: write

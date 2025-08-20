@@ -1,4 +1,4 @@
-name: Cypress Tests with Dependency and Artifact Caching
+name: Cypress E2E Tests with Dependency and Artifact Caching
 
 permissions:
   pull-requests: write
