@@ -49,7 +49,7 @@ jobs:
             const failed = '${{ steps.get-results.outputs.FAILED }}';
             const status = failed === '0' ? '✅ All tests passed!' : `❌ ${failed} tests failed`;
 
-            const body = `### 🧪 Jest Test Results
+            const body = `### 🧪 React Testing Library - Jest - Test Results
 
             | Metric  | Result |
             |---------|--------|

@@ -80,7 +80,7 @@ jobs:
             const failed = '${{ steps.cypress-results.outputs.FAILED }}';
             const status = failed === '0' ? '✅ All tests passed!' : `❌ ${failed} test(s) failed`;
 
-            const body = `### 🌐 Cypress E2E Test Results
+            const body = `### 🌐 Cypress: E2E - Test Results
 
             | Metric  | Result |
             |---------|--------|
