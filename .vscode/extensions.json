@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "pflannery.vscode-versionlens",
+    "legalfina.npm-version-lens",
     "graphql.vscode-graphql",
     "astro-build.houston",
     "mvllow.rose-pine",
